@@ -1109,7 +1109,8 @@ bool RaftPart::leaderElection() {
     if (!prepareElectionRequest(voteReq, hosts)) {
         // Suppose we have three replicas A(leader), B, C, after A crashed,
         // B, C will begin the election. B win, and send hb, C has gap with B
-        // and need the snapshot from B. Meanwhile C begin the election,
+        // and need the snapshot from B. If the heartbeat between B and C
+        // has timed out due to pressure or other reasons, C begin the election,
         // C will be Candidate, but because C is in WAITING_SNAPSHOT,
         // so prepareElectionRequest will return false and go on the election.
         // Becasue C is in Candidate, so it will reject the snapshot request from B.
